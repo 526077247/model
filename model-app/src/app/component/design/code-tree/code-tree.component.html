@@ -1,0 +1,130 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node class="node" *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
+                 (click)="showDetails(node)" (contextmenu)="contextMenu($event, menu,node)">
+    <button mat-icon-button disabled></button>
+    <mat-form-field class="mx-2" *ngIf="node.level>=1">
+      <mat-select #scriptValue [(ngModel)]="node.name" placeholder="选择模板"
+                  (click)="$event.stopPropagation();checklist();"
+                  (ngModelChange)="updateNode(node,scriptValue.value)">
+        <mat-option *ngFor="let script of scripts" [value]="script.id">
+          {{script.name + '-' + TYPE_SCRIPT[script.type]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span *ngIf="node.level<1">{{node.name}}</span>
+    <mat-form-field class="mx-2" *ngIf="node.level>=1">
+      <mat-select #domainValue placeholder="选择模型" [(ngModel)]="node.domainId" (click)="$event.stopPropagation()"
+                  (ngModelChange)="updateNode(node,null,domainValue.value)">
+        <mat-option value="">未选择</mat-option>
+        <mat-option *ngFor="let domain of domains" [value]="domain.id">
+          {{domain.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-tree-node>
+
+  <mat-tree-node class="node" *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
+    <button mat-icon-button disabled></button>
+    <mat-form-field class="mx-2">
+      <mat-select #scriptValue [(ngModel)]="node.name" placeholder="选择模板"
+                  (click)="$event.stopPropagation();checklist();"
+                  (ngModelChange)="updateNode(node,scriptValue.value)">
+        <mat-option *ngFor="let script of scripts" [value]="script">
+          {{script.name + '-' + TYPE_SCRIPT[script.type]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-button (click)="saveNode(node, scriptValue.value)">保存</button>
+    <button mat-button (click)="deleteNode(node,false)">取消</button>
+  </mat-tree-node>
+
+  <mat-tree-node class="node" *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding
+                 [ngClass]="{hover:node.isShow===true}" (click)="showDetails(node)"
+                 (contextmenu)="contextMenu($event, menu,node)">
+    <button mat-icon-button matTreeNodeToggle [matTreeNodeToggleRecursive]="true"
+            [attr.aria-label]="'toggle ' + node.filename">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    <mat-form-field class="mx-2" *ngIf="node.level>=1">
+      <mat-select #scriptValue [(ngModel)]="node.name" placeholder="选择模板"
+                  (click)="$event.stopPropagation();checklist();"
+                  (ngModelChange)="updateNode(node,scriptValue.value)">
+        <mat-option *ngFor="let script of scripts" [value]="script.id">
+          {{script.name + '-' + TYPE_SCRIPT[script.type]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span *ngIf="node.level<1">{{node.name}}</span>
+    <mat-form-field class="mx-2" *ngIf="node.level>=1">
+      <mat-select #domainValue placeholder="选择模型" [(ngModel)]="node.domainId" (click)="$event.stopPropagation()"
+                  (ngModelChange)="updateNode(node,null,domainValue.value)">
+        <mat-option value="">未选择</mat-option>
+        <mat-option *ngFor="let domain of domains" [value]="domain.id">
+          {{domain.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-icon-button (click)="addNewItem(node)">
+      <mat-icon>add</mat-icon>
+    </button>
+
+  </mat-tree-node>
+
+  <mat-tree-node class="node" [ngClass]="{hover:node.isShow===true}" *matTreeNodeDef="let node; when: hasChildButNo"
+                 matTreeNodePadding
+                 (click)="showDetails(node)" (contextmenu)="contextMenu($event, menu,node)">
+    <button mat-icon-button disabled></button>
+    <mat-form-field class="mx-2" *ngIf="node.level>=1">
+      <mat-select #scriptValue [(ngModel)]="node.name" placeholder="选择模板"
+                  (click)="$event.stopPropagation();checklist();"
+                  (ngModelChange)="updateNode(node,scriptValue.value)">
+        <mat-option *ngFor="let script of scripts" [value]="script.id">
+          {{script.name + '-' + TYPE_SCRIPT[script.type]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span *ngIf="node.level<1">{{node.name}}</span>
+    <mat-form-field class="mx-2" *ngIf="node.level>=1">
+      <mat-select #domainValue placeholder="选择模型" [(ngModel)]="node.domainId" (click)="$event.stopPropagation()"
+                  (ngModelChange)="updateNode(node,null,domainValue.value)">
+        <mat-option value="">未选择</mat-option>
+        <mat-option *ngFor="let domain of domains" [value]="domain.id">
+          {{domain.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-icon-button (click)="addNewItem(node);$event.stopPropagation()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-tree-node>
+</mat-tree>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu
+      nzInDropDown
+      nzSelectable
+      (nzClick)="close()">
+    <li nz-menu-item [nzDisabled]="chooseItem.level === 0"
+        (click)="copy()">
+      <i class="mr-1 ion-ios-copy ion-icon"></i>
+      <span>复制</span>
+    </li>
+    <li nz-menu-item [nzDisabled]="chooseItem.level === 0"
+        (click)="shear()">
+      <i class="mr-1 ion-ios-cut ion-icon"></i>
+      <span>剪切</span>
+    </li>
+    <li nz-menu-item
+        (click)="paste()">
+      <i class="mr-1 ion-md-paper ion-icon"></i>
+      <span>粘贴</span>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item [nzDisabled]="chooseItem.level === 0"
+        (click)="delete()">
+      <i class="mr-1 ion-ios-close ion-icon"></i>
+      <span>删除</span>
+    </li>
+  </ul>
+</nz-dropdown-menu>

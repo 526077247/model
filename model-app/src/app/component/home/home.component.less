@@ -1,0 +1,36 @@
+@import "../../../color.less";
+
+.home-page {
+  position: absolute;
+  width: 100%;
+
+  &-header {
+    background-color: @mainColor;
+    height: 300px;
+    text-align: center;
+    padding-top: 50px;
+
+    .font {
+      color: @bgColor;
+    }
+
+    .button {
+      background-color: @bgColor;
+      color: #212529;
+      outline: none;
+      margin-top: 50px;
+    }
+  }
+
+  &-body {
+    &-row {
+      display: flex;
+    }
+  }
+
+  &-footer {
+    background-color: @mainColor;
+    height: 200px;
+  }
+}
+

@@ -1,0 +1,80 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node class="node" [ngClass]="{hover:node.isShow===true}" *matTreeNodeDef="let node" matTreeNodeToggle
+                 matTreeNodePadding (click)="showDetails(node)"
+                 (contextmenu)="contextMenu($event, menu, node)">
+    <button mat-icon-button disabled></button>
+    {{node.name}}
+    <!--    <mat-checkbox class="checklist-leaf-node"-->
+    <!--                  [checked]="checklistSelection.isSelected(node)"-->
+    <!--                  (change)="todoLeafItemSelectionToggle(node)">{{node.name}}</mat-checkbox>-->
+  </mat-tree-node>
+
+  <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding
+                 (contextmenu)="contextMenu($event, menu,node)">
+    <button mat-icon-button disabled></button>
+    <mat-form-field>
+      <input matInput #itemValue placeholder="添加...">
+    </mat-form-field>
+    <button mat-button (click)="saveNode(node, itemValue.value)">保存</button>
+    <button mat-button (click)="deleteNode(node,false)">取消</button>
+  </mat-tree-node>
+
+  <mat-tree-node class="node" [ngClass]="{hover:node.isShow===true}" *matTreeNodeDef="let node; when: hasChild"
+                 matTreeNodePadding (click)="showDetails(node)"
+                 (contextmenu)="contextMenu($event, menu,node)">
+    <button mat-icon-button matTreeNodeToggle [matTreeNodeToggleRecursive]="true"
+            [attr.aria-label]="'toggle ' + node.filename">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    {{node.name}}
+    <!--    <mat-checkbox [checked]="descendantsAllSelected(node)"-->
+    <!--                  [indeterminate]="descendantsPartiallySelected(node)"-->
+    <!--                  (change)="todoItemSelectionToggle(node)">{{node.name}}</mat-checkbox>-->
+    <button mat-icon-button (click)="addNewItem(node);$event.stopPropagation()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-tree-node>
+
+  <mat-tree-node class="node" [ngClass]="{hover:node.isShow===true}" *matTreeNodeDef="let node; when: hasChildButNo"
+                 matTreeNodePadding
+                 (click)="showDetails(node)" (contextmenu)="contextMenu($event, menu,node)">
+    <button mat-icon-button disabled></button>
+    {{node.name}}
+    <!--    <mat-checkbox class="checklist-leaf-node"-->
+    <!--                  [checked]="checklistSelection.isSelected(node)"-->
+    <!--                  (change)="todoLeafItemSelectionToggle(node)">{{node.name}}</mat-checkbox>-->
+    <button mat-icon-button (click)="addNewItem(node);$event.stopPropagation()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-tree-node>
+</mat-tree>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu
+      nzInDropDown
+      nzSelectable
+      (nzClick)="close()">
+    <li nz-menu-item [nzDisabled]="chooseItem.level === 0"
+        (click)="copy()">
+      <i class="mr-1 ion-ios-copy ion-icon"></i>
+      <span>复制</span>
+    </li>
+    <li nz-menu-item [nzDisabled]="chooseItem.level === 0"
+        (click)="shear()">
+      <i class="mr-1 ion-ios-cut ion-icon"></i>
+      <span>剪切</span>
+    </li>
+    <li nz-menu-item
+        (click)="paste()">
+      <i class="mr-1 ion-md-paper ion-icon"></i>
+      <span>粘贴</span>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item [nzDisabled]="chooseItem.level === 0"
+        (click)="delete()">
+      <i class="mr-1 ion-ios-close ion-icon"></i>
+      <span>删除</span>
+    </li>
+  </ul>
+</nz-dropdown-menu>

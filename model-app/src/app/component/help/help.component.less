@@ -1,0 +1,45 @@
+@import "../../../color.less";
+
+.page-header-font {
+  color: #f8f8f8;
+  line-height: 26px;
+}
+
+.page {
+  overflow-y: auto;
+}
+
+.col-10 {
+  min-height: 1900px;
+}
+
+.row {
+  align-items: flex-start;
+}
+
+.table-content {
+  position: sticky;
+  top: 35px;
+}
+
+.help {
+  &-content {
+    margin-top: 10px;
+    padding: 5px 5px;
+    border-left: 5px solid @mainColor;
+  }
+
+  &-item {
+    display: block;
+    color: #212529;
+
+    &.active {
+      color: @mainColor;
+    }
+
+    &:hover {
+      color: @mainColor;
+    }
+
+  }
+}

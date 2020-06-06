@@ -1,0 +1,102 @@
+@import "../../../../color.less";
+
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  &-header {
+    position: absolute;
+    width: 100%;
+    background-color: @mainColor;
+    height: 100px;
+    padding: 2rem 2rem;
+
+    .font {
+      cursor: pointer;
+      display: inline-block;
+      background: transparent;
+      border-radius: 4px;
+      border: none;
+      box-shadow: none;
+      color: #f8f8f8;
+      line-height: 26px;
+      margin-left: -5px;
+      padding: 0 5px;
+      position: relative;
+      top: -1px;
+      width: 730px;
+      outline: none;
+      transition: all .3s ease;
+
+      &:hover {
+        background: hsla(0, 0%, 100%, .2);
+        box-shadow: 0 0 0 1px hsla(0, 0%, 100%, .5);
+      }
+
+      &:focus {
+        background: #fff;
+        box-shadow: inset 0 2px 4px rgba(35, 54, 86, .3);
+        color: #6d757a;
+      }
+    }
+  }
+
+  &-body {
+    position: absolute;
+    width: 100%;
+    top: 100px;
+    bottom: 0;
+
+    &-header {
+      padding: 1rem 2rem;
+      position: absolute;
+      width: 100%;
+      height: 40px;
+    }
+
+    &-content {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      top: 50px;
+    }
+
+    .left {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-right: 1px solid @borderColor;
+      width: 25%;
+      overflow-y: auto;
+
+    }
+
+    .mid {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-right: 1px solid @borderColor;
+      width: 50%;
+      left: 25%;
+      overflow-y: auto;
+    }
+
+    .right {
+      position: absolute;
+      width: 25%;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+  }
+}
+
+.ionicons {
+  font-size: 20px;
+  line-height: 1;
+}
+

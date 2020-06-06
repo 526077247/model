@@ -1,0 +1,78 @@
+<div class="page">
+  <div class="page-header">
+    <label>
+      <input class="display-3 font" [(ngModel)]="project.name" (ngModelChange)="rename()">
+    </label>
+    <div class="float-right mt-3">
+      <button class="btn btn-lg btn-outline-success ml-2" tooltip="打开" (click)="showProjects()" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="ion-ios-list"></span>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" *ngFor="let item of projects" (click)="showProject(item)"
+           href="javascript:">{{item.name}}</a>
+      </div>
+      <button class="btn btn-lg btn-outline-success ml-2" tooltip="新建" (click)="newProject()">
+        <span class="ion-ios-card"></span>
+      </button>
+      <button class="btn btn-lg btn-outline-success ml-2" tooltip="保存" (click)="saveProject()">
+        <span class="ion-ios-save"></span>
+      </button>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="left">
+      <div class="left-top">
+        <div class="left-header">
+          <h3>模型构建</h3>
+        </div>
+        <div class="left-content">
+          <div class="left-content-in">
+            <app-domain-tree #tree [setDatabase]="project" (addItemEmitter)="addDomain($event)"
+                             (showItemEmitter)="setShowDomain($event)"
+                             (delItemEmitter)="deleteDomain($event)"
+                             (copyItemEmitter)="copyDomain($event)"
+                             (pasteItemEmitter)="pasteDomain($event)"></app-domain-tree>
+          </div>
+        </div>
+      </div>
+      <div class="left-bottom">
+        <div class="left-header">
+          <h3>模板构建</h3>
+        </div>
+        <div class="left-content">
+          <div class="left-content-in">
+            <app-code-tree [setdomains]="domainList" [setDatabase]="project"
+                           (addItemEmitter)="addScript($event)"
+                           (updateItemEmitter)="updateScript($event)"
+                           (showItemEmitter)="showScript($event)"
+                           (delItemEmitter)="deleteScript($event)"
+            ></app-code-tree>
+          </div>
+          <!--
+
+                                   (copyItemEmitter)="copyScript($event)"
+                                   (pasteItemEmitter)="pasteScript($event)"-->
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+        <mat-tab label="模型设计">
+          <app-domain-design [setShowDomain]=showDomain [setDropDownList]="domainList"
+                             (nameChangeEmitter)="rename($event)"></app-domain-design>
+        </mat-tab>
+        <mat-tab label="代码生成">
+          <ng-template matTabContent>
+            <codemirror
+              [(ngModel)]="resultCode"
+              [config]="cmOptions">
+            </codemirror>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+
+    </div>
+  </div>
+</div>
+

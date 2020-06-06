@@ -1,0 +1,18 @@
+<div class="page">
+  <div class="page-header">
+    <h1 class="display-3 page-header-font">{{TYPE_TABS[selected.value]}}</h1>
+  </div>
+  <div class="page-body">
+    <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="goLocation($event)">
+      <mat-tab label="模板商城">
+        <app-script-shop></app-script-shop>
+      </mat-tab>
+      <mat-tab label="我的模板">
+        <app-script-manager></app-script-manager>
+      </mat-tab>
+      <mat-tab label="创作模板" >
+
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

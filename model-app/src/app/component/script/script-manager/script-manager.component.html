@@ -1,0 +1,74 @@
+<div class="my-5 text-center" *ngIf="isLoading">
+  <div class="spinner-border text-primary" role="status" >
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<ng-container *ngIf="!isLoading">
+<div class="container my-5">
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let item of scripts.list" (opened)="getContent(item)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{item.name}} ({{item.createTime | dateformat}})
+          <a href="javascript:" class="font ml-2" tooltip="编辑" (click)="goLocation(item);$event.stopPropagation()"
+          >
+            <span class="ionicons ion-ios-settings"></span>
+          </a>
+          <a href="javascript:" class="font ml-2" tooltip="删除" (click)="$event.stopPropagation();this.deleteScript = item"
+             [popover]="popOpenDelete" tooltipPlacement="bottom"
+             [outsideClick]="true">
+            <span>&times;</span>
+          </a>
+        </mat-panel-title>
+        <mat-panel-description>
+          {{item.describeContent}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field>
+        <input matInput placeholder="类别" disabled [value]="TYPE_SCRIPT[item.type]">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="公开类型" disabled [value]="!!item.state?'私密':'公开'">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="备注" disabled [value]="item.remark">
+      </mat-form-field>
+      <pre>{{item.content}}</pre>
+
+
+    </mat-expansion-panel>
+
+    <nav class="mt-5 nav-box" aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" style="min-width: 45px">
+          <a class="page-link" href="javascript:" (click)="changePage(1)">首页</a>
+        </li>
+        <li class="page-item" style="min-width: 60px" [ngClass]="{'disabled':pageNow===1}">
+          <a class="page-link" href="javascript:" (click)="changePage(pageNow - 1)">上一页</a>
+        </li>
+        <li *ngFor="let n of getShowNum()" class="page-item" [ngClass]="{'active':n===pageNow}">
+          <a *ngIf="n!==pageNow" class="page-link" href="javascript:" (click)="changePage(n)">{{n}}</a>
+          <span *ngIf="n===pageNow" class="page-link ">
+              {{n}}
+            <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        <li class="page-item" style="min-width: 60px" [ngClass]="{'disabled':pageNow===pageCount}">
+          <a class="page-link" href="javascript:" (click)="changePage(pageNow + 1)">下一页</a>
+        </li>
+        <li class="page-item" style="min-width: 45px">
+          <a class="page-link" href="javascript:" (click)="changePage(pageCount)">末页</a>
+        </li>
+      </ul>
+    </nav>
+  </mat-accordion>
+</div>
+</ng-container>
+
+<ng-template #popOpenDelete>
+  <p>确认删除？</p>
+  <div>
+    <button type="button" class="btn btn-sm btn-link" (click)="$event.stopPropagation();delete()">确认</button>
+  </div>
+</ng-template>

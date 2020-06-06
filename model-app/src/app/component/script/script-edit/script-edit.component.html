@@ -1,0 +1,118 @@
+<div class="page">
+  <div class="page-header">
+    <label>
+      <input class="display-3 font" [(ngModel)]="script.name" [disabled]="!isOwner">
+    </label>
+    <mat-form-field *ngIf="isOwner">
+      <mat-select [(ngModel)]="script.type" placeholder="语言类型">
+        <mat-option *ngFor="let item of scriptTypes" [value]="item.key">{{item.value}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="isOwner">
+      <mat-select [(ngModel)]="script.state" placeholder="公开类型">
+        <mat-option [value]="0">公开</mat-option>
+        <mat-option [value]="1">私密</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="float-right mt-3">
+      <button class="btn btn-lg btn-outline-primary mx-1" tooltip="返回" [routerLink]="redirectUrl">
+        <span class="ion-md-refresh ionicons"></span>
+      </button>
+      <button *ngIf="isOwner" class="btn btn-lg btn-outline-primary mx-1" tooltip="编辑" (click)="setShowModal(modifyScriptModel)">
+        <span class="ion-md-create ionicons"></span>
+      </button>
+      <button class="btn btn-lg btn-outline-success mx-1" tooltip="运行" (click)="run()">
+        <span class="ion-md-arrow-dropright ionicons"></span>
+      </button>
+      <button *ngIf="isOwner" class="btn btn-lg btn-outline-primary mx-1" tooltip="保存" (click)="saveScript()">
+        <span class="ion-ios-save ionicons"></span>
+      </button>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="left">
+      <div class="page-body-header">测试数据
+        <a href="javascript:" (click)="setShowModal(modifyDomainModel,true)" tooltip="自定义数据">
+          <span class="ionicons ion-ios-settings"></span>
+        </a>
+      </div>
+      <div class="page-body-content">
+        <ngx-json-viewer class="left-text" [json]="textJosn"></ngx-json-viewer>
+      </div>
+    </div>
+    <div class="mid">
+      <div class="page-body-header">编辑区域</div>
+      <div class="page-body-content">
+        <codemirror
+          [(ngModel)]="script.content"
+          [config]="cmOptions">
+        </codemirror>
+      </div>
+    </div>
+    <div class="right">
+      <div class="page-body-header">
+        <span>效果预览</span>
+        <button class="btn btn-sm btn-outline-primary float-right" (click)="copyRes()">复制</button>
+      </div>
+      <div class="page-body-content">
+        <pre id="invite_code" style="overflow: inherit;">{{resultStr}}</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
+<ng-template #modifyScriptModel>
+  <div class="modal-header">
+    <h5 class="modal-title">编辑脚本信息</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="my-2 col-6">
+        <span class="form-label">语言类型:</span>
+        <select class="form-control normal d-inline-block" [(ngModel)]="script.type">
+          <option *ngFor="let item of scriptTypes" [value]="item.key">{{item.value}}</option>
+        </select>
+      </div>
+      <div class="my-2 col-6">
+        <span class="form-label">公开类型:</span>
+        <select class="form-control normal d-inline-block" [(ngModel)]="script.state">
+          <option [value]="0">公开</option>
+          <option [value]="1">私密</option>
+        </select>
+      </div>
+      <div class="my-2 col-12">
+        <span class="form-label">脚本说明:</span>
+        <textarea class="form-control" [(ngModel)]="script.describeContent"></textarea>
+      </div>
+      <div class="my-2 col-12">
+        <span class="form-label">备注:</span>
+        <textarea class="form-control" [(ngModel)]="script.remark"></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="showModal.hide()">关闭</button>
+    <button type="button" class="btn btn-primary" (click)="saveScript();showModal.hide()">确定</button>
+  </div>
+</ng-template>
+<ng-template #modifyDomainModel>
+  <div class="modal-header">
+    <h5 class="modal-title">编辑测试数据</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-domain-design [setShowDomain]=textJosn></app-domain-design>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="showModal.hide()">关闭</button>
+    <button type="button" class="btn btn-primary" (click)="saveChange()">确定</button>
+  </div>
+</ng-template>
+

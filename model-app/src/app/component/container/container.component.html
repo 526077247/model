@@ -1,0 +1,30 @@
+<header class="container-header">
+  <h1 class="container-header-title">
+    <a class="container-header-title-link ml-5 d-inline-block " matRipple routerLink="/">首页</a>
+    <a class="container-header-title-link ml-5 d-inline-block " matRipple routerLink="/design">模型</a>
+    <a class="container-header-title-link ml-5 d-inline-block " matRipple routerLink="/script">模板</a>
+    <a class="container-header-title-link ml-5 d-inline-block " matRipple routerLink="/help">指南</a>
+<!--    <a class="container-header-title-link ml-5 d-inline-block" *ngFor="let item of getTitle()"-->
+<!--       [routerLink]="'/list/'+item">{{getName(item)}}</a>-->
+    <span class="container-header-controls mr-3" matRipple>
+      <a href="javascript:" class="container-header-control " [class.active]="isOpen"
+         routerLink="/login">
+        <span class="ion-ios-person ionicon"></span>
+      </a>
+    </span>
+  </h1>
+
+</header>
+<!--<div class="personal-Info" *ngIf="isOpen">-->
+<!--  <div class="personal-Info-body">-->
+<!--    <p>用户账号：{{loginUser.UserId}}</p>-->
+<!--    <p>角色姓名：{{loginUser.NickName}}</p>-->
+<!--  </div>-->
+<!--  <div class="open-footer text-right">-->
+<!--    <button type="button" class="btn btn-sm btn-link" (click)="showEditPasswordModal()">修改密码</button>-->
+<!--    <button type="button" class="btn btn-sm btn-link" (click)="exit()">退出</button>-->
+<!--  </div>-->
+<!--</div>-->
+<section class="container-body">
+  <router-outlet></router-outlet>
+</section>

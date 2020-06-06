@@ -1,0 +1,18 @@
+{
+  "/Service": {
+    "target": "https://www.mayuntao.xyz",
+    "changeOrigin": true
+  },
+  "/code": {
+    "target": "http://mayuntao.xyz:8888",
+    "changeOrigin": true
+  },
+  "/api": {
+    "target": "http://mayuntao.xyz:8082",
+    "changeOrigin": true
+  },
+  "/helpinfo": {
+    "target": "http://mayuntao.xyz:8082",
+    "changeOrigin": true
+  }
+}

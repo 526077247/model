@@ -1,0 +1,276 @@
+<div class="mt-5">
+  <h3 class="border-bottom">对象信息</h3>
+  <div class="row container-fluid">
+    <div class="my-2 col-4">
+      <span class="form-label">名称:</span>
+      <input class="form-control normal d-inline-block" [(ngModel)]="modifyDomain.name"
+             (ngModelChange)="nameChangeEmitter.emit({id:modifyDomain.id, name:modifyDomain.name})">
+    </div>
+    <div class="my-2 col-4">
+      <span class="form-label">描述:</span>
+      <input class="form-control normal d-inline-block" [(ngModel)]="modifyDomain.describe">
+    </div>
+    <div class="my-2 col-4">
+      <span class="form-label">基类:</span>
+      <input class="form-control normal d-inline-block" type="text"
+             [(ngModel)]="modifyDomain.type" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <ng-container *ngFor="let item of classes">
+          <mat-option *ngIf="item.name.indexOf(modifyDomain.type)>=0" [value]="item.name">
+            {{item.name}}
+          </mat-option>
+        </ng-container>
+      </mat-autocomplete>
+    </div>
+    <div class="my-2 col-4">
+      <span class="form-label">表名:</span>
+      <input class="form-control normal d-inline-block" [(ngModel)]="modifyDomain.tableName">
+    </div>
+    <div class="my-2 col-4">
+      <span class="form-label">命名空间:</span>
+      <input class="form-control normal d-inline-block" [(ngModel)]="modifyDomain.nameSpace">
+    </div>
+    <div class="my-2 col-4">
+      <span class="form-label">程序集:</span>
+      <input class="form-control normal d-inline-block" [(ngModel)]="modifyDomain.assemblyName">
+    </div>
+    <div class="my-2 col-4">
+      <span class="form-label">备注:</span>
+      <input class="form-control normal d-inline-block" [(ngModel)]="modifyDomain.remark">
+    </div>
+    <div class="my-2 col-8">
+      <span class="form-label large">扩展属性:</span>
+      <input class="form-control large d-inline-block" [(ngModel)]="modifyDomain.extend">
+    </div>
+  </div>
+</div>
+<div class="mt-5">
+  <h3 class="border-bottom">字段属性</h3>
+  <table class="table table-bordered table-form mt-3 text-center" (contextmenu)="contextMenu($event, menu, 1)">
+    <tbody>
+    <tr>
+      <th>全选</th>
+      <th rowspan="2">名称</th>
+      <th rowspan="2">描述</th>
+      <th rowspan="2">类型</th>
+      <th rowspan="2">备注</th>
+      <th rowspan="2">扩展属性</th>
+      <th colspan="6">数据库选项</th>
+      <th colspan="1">操作</th>
+    </tr>
+    <tr>
+      <td>
+        <mat-checkbox [checked]="isAllAttrCheck()" (click)="checkAttrAll()"></mat-checkbox>
+      </td>
+      <th>主键</th>
+      <th>非空</th>
+      <th>查询</th>
+      <th>排序</th>
+      <th>索引</th>
+      <th>跳过</th>
+      <th>移除</th>
+    </tr>
+    <tr *ngFor="let item of this.modifyDomain.classAttributes">
+      <td>
+        <mat-checkbox [checked]="item.isCheck" (click)="changeAttrCheck(item)"></mat-checkbox>
+      </td>
+      <td><input class="form-control" [(ngModel)]="item.name"></td>
+      <td><input class="form-control" [(ngModel)]="item.describe"></td>
+      <td>
+        <input class="form-control " type="text"
+               [(ngModel)]="item.type" [matAutocomplete]="auto1">
+        <mat-autocomplete #auto1="matAutocomplete">
+          <ng-container *ngFor="let classType of baseClasses">
+            <mat-option *ngIf="classType.indexOf(item.type)>=0" [value]="classType">
+              {{classType}}
+            </mat-option>
+          </ng-container>
+          <ng-container *ngFor="let classType of classes">
+            <mat-option *ngIf="classType.name.indexOf(item.type)>=0" [value]="classType.name">
+              {{classType.name}}
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </td>
+      <td><input class="form-control" [(ngModel)]="item.remark"></td>
+      <td><input class="form-control" [(ngModel)]="item.extend"></td>
+      <td>
+        <mat-checkbox [checked]="isCheck(sqlType.PK,item)" (click)="changeCheck(sqlType.PK,item)"></mat-checkbox>
+      </td>
+      <td>
+        <mat-checkbox [checked]="isCheck(sqlType.NOTNULL,item)"
+                      (click)="changeCheck(sqlType.NOTNULL,item)"></mat-checkbox>
+      </td>
+      <td>
+        <mat-checkbox [checked]="isCheck(sqlType.QUERY,item)" (click)="changeCheck(sqlType.QUERY,item)"></mat-checkbox>
+      </td>
+      <td>
+        <mat-checkbox [checked]="isCheck(sqlType.ORDER,item)" (click)="changeCheck(sqlType.ORDER,item)"></mat-checkbox>
+      </td>
+      <td>
+        <mat-checkbox [checked]="isCheck(sqlType.INDEX,item)" (click)="changeCheck(sqlType.INDEX,item)"></mat-checkbox>
+      </td>
+      <td>
+        <mat-checkbox [checked]="isCheck(sqlType.SKIP,item)" (click)="changeCheck(sqlType.SKIP,item)"></mat-checkbox>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-outline-danger" (click)="deleteAttr(item)">&times;</button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="13" class="text-center">
+        <a href="javascript:" (click)="addClassAttribute()">
+          <span class="ion-md-add"></span>
+          <span class="ml-2">添加字段</span>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="mt-5">
+  <h3 class="border-bottom">方法接口</h3>
+  <table class="table table-bordered table-form mt-3 text-center" (contextmenu)="contextMenu($event, menu, 2)">
+    <tbody>
+    <tr>
+      <th>全选</th>
+      <th rowspan="2">名称</th>
+      <th rowspan="2">描述</th>
+      <th rowspan="2">返回值类型</th>
+      <th rowspan="2">备注</th>
+      <th rowspan="2">扩展属性</th>
+      <th rowspan="2">参数个数</th>
+      <th colspan="2">操作</th>
+    </tr>
+    <tr>
+      <td>
+        <mat-checkbox [checked]="isAllMethodCheck()" (click)="checkMethodAll()"></mat-checkbox>
+      </td>
+      <th>编辑参数</th>
+      <th>移除</th>
+    </tr>
+    <ng-container *ngFor="let item of this.modifyDomain.methods">
+      <tr>
+        <td>
+          <mat-checkbox [checked]="item.isCheck" (click)="changeMethodCheck(item)"></mat-checkbox>
+        </td>
+        <td><input class="form-control" [(ngModel)]="item.name"></td>
+        <td><input class="form-control" [(ngModel)]="item.describe"></td>
+        <td>
+          <input class="form-control " type="text"
+                 [(ngModel)]="item.returnType" [matAutocomplete]="auto2">
+          <mat-autocomplete #auto2="matAutocomplete">
+            <ng-container *ngFor="let classType of baseClasses">
+              <mat-option *ngIf="classType.indexOf(item.returnType)>=0" [value]="classType">
+                {{classType}}
+              </mat-option>
+            </ng-container>
+            <ng-container *ngFor="let classType of classes">
+              <mat-option *ngIf="classType.name.indexOf(item.returnType)>=0" [value]="classType.name">
+                {{classType.name}}
+              </mat-option>
+            </ng-container>
+          </mat-autocomplete>
+        </td>
+        <td><input class="form-control" [(ngModel)]="item.remark"></td>
+        <td><input class="form-control" [(ngModel)]="item.extend"></td>
+        <td><span>{{item.parameters.length}}</span></td>
+        <td>
+          <button class="btn btn-sm btn-outline-primary" (click)="showMethodPara(item)"><span
+            class="ion-ios-settings"></span></button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-outline-danger" (click)="deleteMethod(item)">&times;</button>
+        </td>
+      </tr>
+      <ng-container *ngIf="showMethodId === item.id">
+        <tr class="para">
+          <td>
+            <mat-checkbox [checked]="isAllParaCheck(item)" (click)="checkParaAll(item)"></mat-checkbox>
+          </td>
+          <th>名称</th>
+          <th>描述</th>
+          <th>类型</th>
+          <th>备注</th>
+          <th>扩展属性</th>
+          <th>序号</th>
+          <th colspan="2">删除</th>
+        </tr>
+        <tr *ngFor="let para of item.parameters;let i = index" class="para">
+          <td>
+            <mat-checkbox [checked]="para.isCheck" (click)="changeParaCheck(para)"></mat-checkbox>
+          </td>
+          <td><input class="form-control" [(ngModel)]="para.name"></td>
+          <td><input class="form-control" [(ngModel)]="para.describe"></td>
+          <td>
+            <input class="form-control " type="text"
+                   [(ngModel)]="para.type" [matAutocomplete]="auto3">
+            <mat-autocomplete #auto3="matAutocomplete">
+              <ng-container *ngFor="let classType of baseClasses">
+                <mat-option *ngIf="classType.indexOf(para.type)>=0" [value]="classType">
+                  {{classType}}
+                </mat-option>
+              </ng-container>
+              <ng-container *ngFor="let classType of classes">
+                <mat-option *ngIf="classType.name.indexOf(para.type)>=0" [value]="classType.name">
+                  {{classType.name}}
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </td>
+          <td><input class="form-control" [(ngModel)]="para.remark"></td>
+          <td><input class="form-control" [(ngModel)]="para.extend"></td>
+          <td>{{i + 1}}</td>
+          <td colspan="2">
+            <button class="btn btn-sm btn-outline-danger" (click)="deletePara(item,para)">&times;</button>
+          </td>
+        </tr>
+        <tr class="para">
+          <td colspan="12" class="text-center">
+            <a href="javascript:" (click)="addPara(item)">
+              <span class="ion-md-add"></span>
+              <span class="ml-2">添加参数</span>
+            </a>
+          </td>
+        </tr>
+      </ng-container>
+    </ng-container>
+    <tr>
+      <td colspan="12" class="text-center">
+        <a href="javascript:" (click)="addMethod()">
+          <span class="ion-md-add"></span>
+          <span class="ml-2">添加接口</span>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu
+      nzInDropDown
+      nzSelectable
+      (nzClick)="close()">
+    <li nz-menu-item
+        (click)="copy()">
+      <i class="mr-1 ion-ios-copy ion-icon"></i>
+      <span>复制勾选项</span>
+    </li>
+    <li nz-menu-item
+        (click)="paste()">
+      <i class="mr-1 ion-md-paper ion-icon"></i>
+      <span>粘贴</span>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item
+        (click)="delete()">
+      <i class="mr-1 ion-ios-close ion-icon"></i>
+      <span>删除勾选项</span>
+    </li>
+  </ul>
+</nz-dropdown-menu>
+
+
+<div class="copy-space" id="invite_code">{{copyContent}}</div>
+
+

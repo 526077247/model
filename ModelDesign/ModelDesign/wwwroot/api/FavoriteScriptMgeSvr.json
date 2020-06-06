@@ -1,0 +1,5 @@
+{
+  "SvrID": "FavoriteScriptMgeSvr",
+  "IntfName": "ModelDesign.Service.IFavoriteScriptMgeSvr",
+  "IntfAssembly": "ModelDesign.Service"
+}

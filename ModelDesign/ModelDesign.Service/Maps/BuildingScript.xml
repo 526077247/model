@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<sqlMap
+	namespace="ModelDesign.Service"
+	xmlns="http://ibatis.apache.org/mapping"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <alias>
+    <typeAlias alias="BuildingScript" assembly="ModelDesign.Service.dll" type="ModelDesign.Service.BuildingScript, ModelDesign.Service" />
+  </alias>
+
+  <resultMaps>
+
+    <resultMap id="BuildingScriptResult" class="BuildingScript">
+      <result property="id" column="id" />
+      <result property="name" column="name" />
+      <result property="userId" column="userId" />
+      <result property="createTime" column="createTime" />
+      <result property="describeContent" column="describeContent" />
+      <result property="state" column="state" />
+      <result property="type" column="type" />
+      <result property="remark" column="remark" />
+    </resultMap>
+  </resultMaps>
+
+  <parameterMaps>
+
+    <parameterMap id="BuildingScriptParams" class="BuildingScript">
+      <parameter property="id" column="id" />
+      <parameter property="name" column="name" />
+      <parameter property="userId" column="userId" />
+      <parameter property="createTime" column="createTime" />
+      <parameter property="describeContent" column="describeContent" />
+      <parameter property="state" column="state" />
+      <parameter property="type" column="type" />
+      <parameter property="remark" column="remark" />
+    </parameterMap>
+
+    <parameterMap id="UpdateBuildingScriptParams" extends="BuildingScriptParams" class="BuildingScript">
+      <parameter property="id" column="id" />
+    </parameterMap>
+
+  </parameterMaps>
+
+  <statements>
+
+    <select id="GetBuildingScriptCount"  resultClass="int">
+      SELECT count(*)
+      FROM BuildingScript;
+    </select>
+
+    <select id="GetBuildingScript"  parameterClass="BuildingScript" resultMap="BuildingScriptResult">
+      SELECT *
+      FROM BuildingScript
+      WHERE (id = #id#) ;
+    </select>
+
+    <select id="GetBuildingScriptByPara"  parameterClass="BuildingScript" resultMap="BuildingScriptResult">
+      SELECT *
+      FROM BuildingScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="name" >
+          name = #name#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="createTime_S" >
+          createTime between #createTime_S# and #createTime_E#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state" >
+          state =  #state#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state_IN" >
+          (state in ($state_IN$))
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type" >
+          type =  #type#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type_IN" >
+          (type in ($type_IN$))
+        </isNotEmpty>
+      </dynamic>
+
+    </select>
+
+    <select id="GetBuildingScriptList" parameterClass="string" resultMap="BuildingScriptResult">
+      SELECT *
+      FROM BuildingScript
+      <dynamic prepend="Order By" >
+        <isNotEmpty prepend="Order By" property="_OrderBy">
+          <isEqual compareValue="createTime" property="_OrderBy">
+            createTime
+          </isEqual>
+          <isEqual compareValue="createTime_D" property="_OrderBy">
+            createTime desc
+          </isEqual>
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+    <select id="QueryBuildingScriptCount" parameterClass="Hashtable" resultClass="int">
+      SELECT count(*)
+      FROM BuildingScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="id_IN" >
+          (id in ($id_IN$))
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="name" >
+          name = #name#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="createTime_S" >
+          createTime between #createTime_S# and #createTime_E#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state" >
+          state =  #state#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state_IN" >
+          (state in ($state_IN$))
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type" >
+          type =  #type#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type_IN" >
+          (type in ($type_IN$))
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+
+    <select id="QueryBuildingScriptList" parameterClass="Hashtable" resultMap="BuildingScriptResult">
+      SELECT *
+      FROM BuildingScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="id_IN" >
+          (id in ($id_IN$))
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="name" >
+          name = #name#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="createTime_S" >
+          createTime between #createTime_S# and #createTime_E#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state" >
+          state =  #state#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state_IN" >
+          (state in ($state_IN$))
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type" >
+          type =  #type#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type_IN" >
+          (type in ($type_IN$))
+        </isNotEmpty>
+      </dynamic>
+      <dynamic prepend="Order By" >
+        <isNotEmpty prepend="Order By" property="_OrderBy" >
+          <isEqual compareValue="createTime" property="_OrderBy">
+            createTime
+          </isEqual>
+          <isEqual compareValue="createTime_D" property="_OrderBy">
+            createTime desc
+          </isEqual>
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+    <insert id="InsertBuildingScript" parameterMap="BuildingScriptParams">
+      <generate table="BuildingScript" />
+    </insert>
+
+    <delete id="DeleteBuildingScript" parameterClass="BuildingScript">
+      DELETE FROM BuildingScript WHERE (id = #id#) ;
+    </delete>
+
+    <select id="DeleteBuildingScriptByPara" parameterClass="BuildingScript">
+      DELETE FROM BuildingScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="name" >
+          name = #name#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="createTime_S" >
+          createTime between #createTime_S# and #createTime_E#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state" >
+          state =  #state#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="state_IN" >
+          (state in ($state_IN$))
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type" >
+          type =  #type#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="type_IN" >
+          (type in ($type_IN$))
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+    <update id="UpdateBuildingScript" parameterMap="UpdateBuildingScriptParams">
+      UPDATE BuildingScript SET
+      id = ?,
+      name = ?,
+      userId = ?,
+      createTime = ?,
+      describeContent = ?,
+      state = ?,
+      type = ?,
+      remark = ?
+      WHERE id = ?;
+    </update>
+
+
+  </statements>
+
+</sqlMap>

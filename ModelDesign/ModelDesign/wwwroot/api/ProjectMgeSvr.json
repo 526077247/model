@@ -1,0 +1,5 @@
+{
+  "SvrID": "ProjectMgeSvr",
+  "IntfName": "ModelDesign.Service.IProjectMgeSvr",
+  "IntfAssembly": "ModelDesign.Service"
+}

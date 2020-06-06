@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Maps\BuildingScript.xml" />
+    <None Remove="Maps\FavoriteScript.xml" />
+    <None Remove="Maps\Project.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Maps\BuildingScript.xml" />
+    <EmbeddedResource Include="Maps\FavoriteScript.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Maps\Project.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Service.Core-PsFramework" Version="1.0.12" />
+  </ItemGroup>
+
+</Project>

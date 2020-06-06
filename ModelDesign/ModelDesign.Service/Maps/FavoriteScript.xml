@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<sqlMap
+	namespace="ModelDesign.Service"
+	xmlns="http://ibatis.apache.org/mapping"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <alias>
+    <typeAlias alias="FavoriteScript" assembly="ModelDesign.Service.dll" type="ModelDesign.Service.FavoriteScript, ModelDesign.Service" />
+  </alias>
+
+  <resultMaps>
+
+    <resultMap id="FavoriteScriptResult" class="FavoriteScript">
+      <result property="id" column="id" />
+      <result property="userId" column="userId" />
+      <result property="scriptId" column="scriptId" />
+      <result property="addTime" column="addTime" />
+      
+
+    </resultMap>
+  </resultMaps>
+
+  <parameterMaps>
+
+    <parameterMap id="FavoriteScriptParams" class="FavoriteScript">
+      <parameter property="id" column="id" />
+      <parameter property="userId" column="userId" />
+      <parameter property="scriptId" column="scriptId" />
+      <parameter property="addTime" column="addTime" />
+    </parameterMap>
+
+    <parameterMap id="UpdateFavoriteScriptParams" extends="FavoriteScriptParams" class="FavoriteScript">
+      <parameter property="id" column="id" />
+    </parameterMap>
+
+  </parameterMaps>
+
+  <statements>
+
+    <select id="GetFavoriteScriptCount"  resultClass="int">
+      SELECT count(*)
+      FROM FavoriteScript;
+    </select>
+
+    <select id="GetFavoriteScript"  parameterClass="FavoriteScript" resultMap="FavoriteScriptResult">
+      SELECT *
+      FROM FavoriteScript
+      WHERE (id = #id#) ;
+    </select>
+
+    <select id="GetFavoriteScriptByPara"  parameterClass="FavoriteScript" resultMap="FavoriteScriptResult">
+      SELECT *
+      FROM FavoriteScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="scriptId" >
+          scriptId = #scriptId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="addTime_S" >
+          addTime between #addTime_S# and #addTime_E#
+        </isNotEmpty>
+      </dynamic>
+
+    </select>
+
+    <select id="GetFavoriteScriptList" parameterClass="string" resultMap="FavoriteScriptResult">
+      SELECT *
+      FROM FavoriteScript
+      <dynamic prepend="Order By" >
+        <isNotEmpty prepend="Order By" property="_OrderBy">
+          <isEqual compareValue="addTime" property="_OrderBy">
+            addTime
+          </isEqual>
+          <isEqual compareValue="addTime_D" property="_OrderBy">
+            addTime desc
+          </isEqual>
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+    <select id="QueryFavoriteScriptCount" parameterClass="Hashtable" resultClass="int">
+      SELECT count(*)
+      FROM FavoriteScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="scriptId" >
+          scriptId = #scriptId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="addTime_S" >
+          addTime between #addTime_S# and #addTime_E#
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+
+    <select id="QueryFavoriteScriptList" parameterClass="Hashtable" resultMap="FavoriteScriptResult">
+      SELECT *
+      FROM FavoriteScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="scriptId" >
+          scriptId = #scriptId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="addTime_S" >
+          addTime between #addTime_S# and #addTime_E#
+        </isNotEmpty>
+      </dynamic>
+      <dynamic prepend="Order By" >
+        <isNotEmpty prepend="Order By" property="_OrderBy" >
+          <isEqual compareValue="addTime" property="_OrderBy">
+            addTime
+          </isEqual>
+          <isEqual compareValue="addTime_D" property="_OrderBy">
+            addTime desc
+          </isEqual>
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+    <insert id="InsertFavoriteScript" parameterMap="FavoriteScriptParams">
+      <generate table="FavoriteScript" />
+    </insert>
+
+    <delete id="DeleteFavoriteScript" parameterClass="FavoriteScript">
+      DELETE FROM FavoriteScript WHERE (id = #id#) ;
+    </delete>
+
+    <select id="DeleteFavoriteScriptByPara" parameterClass="FavoriteScript">
+      DELETE FROM FavoriteScript
+      <dynamic prepend="WHERE" >
+        <isNotEmpty prepend="AND" property="id" >
+          id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="userId" >
+          userId = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="scriptId" >
+          scriptId = #scriptId#
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="addTime_S" >
+          addTime between #addTime_S# and #addTime_E#
+        </isNotEmpty>
+      </dynamic>
+    </select>
+
+    <update id="UpdateFavoriteScript" parameterMap="UpdateFavoriteScriptParams">
+      UPDATE FavoriteScript SET
+      id = ?,
+      userId = ?,
+      scriptId = ?,
+      addTime = ?
+      WHERE id = ?;
+    </update>
+
+
+  </statements>
+
+</sqlMap>

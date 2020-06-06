@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  
+  <components>
+    <!--缓存管理-->
+    <component type="service.core.CacheManager, service.core" service="service.core.ICacheManager, service.core"/>
+    
+    <!--验证登陆-->
+    <component id="CheckLoginMgeSvr" type="ModelDesign.Service.CheckLoginMgeSvr, ModelDesign.Service" service="service.core.ICheckLoginMgeSvr, service.core"/>
+    <!--用户管理-->
+    <component id="LoginMgeSvr" type="service.core.ProxyService, service.core" service="service.core.IProxyService, service.core">
+      <parameters>
+        <service>sso.service.ILoginMgeSvr, sso.service</service>
+        <url>http://47.98.50.215/Service/LoginMgeSvr.assx</url>
+      </parameters>
+    </component>
+    <!--项目管理服务-->
+    <component id="ProjectMgeSvr" type="ModelDesign.Service.ProjectMgeSvr, ModelDesign.Service" service="ModelDesign.Service.IProjectMgeSvr, ModelDesign.Service"/>
+    <!--模型设计服务
+    <component id="ModelDesignSvr" type="ModelDesign.Service.ModelDesignSvr, ModelDesign.Service" service="ModelDesign.Service.IModelDesignSvr, ModelDesign.Service"/>-->
+    <!--脚本管理服务-->
+    <component id="BuildingScriptMgeSvr" type="ModelDesign.Service.BuildingScriptMgeSvr, ModelDesign.Service" service="ModelDesign.Service.IBuildingScriptMgeSvr, ModelDesign.Service"/>
+    <!--最爱脚本管理服务-->
+    <component id="FavoriteScriptMgeSvr" type="ModelDesign.Service.FavoriteScriptMgeSvr, ModelDesign.Service" service="ModelDesign.Service.IFavoriteScriptMgeSvr, ModelDesign.Service"/>
+  </components>
+</configuration>

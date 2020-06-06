@@ -1,0 +1,32 @@
+<div class="page">
+  <div class="page-header">
+    <h1 class="display-3 page-header-font">{{getTypeName(type) || '帮助'}}</h1>
+  </div>
+  <div class="page-body">
+    <div class="container ">
+      <div class="row">
+        <div class="col-10">
+          <markdown [src]="type?'/helpinfo/'+type+'.md':'/helpinfo/help.md'" class="page-content"></markdown>
+        </div>
+        <div class="col-2 table-content">
+          <div class="help-content">
+            <h4>帮助</h4>
+            <ng-container *ngFor="let menu of menulist">
+              <mat-divider></mat-divider>
+              <a class="help-item ml-1 mt-1" [ngClass]="{'active':!step&&type===menu.type}"
+                 [routerLink]="'/help/'+menu.type">{{menu.name}}</a>
+              <a class="help-item ml-4 mt-1" [ngClass]="{'active':step===item.type&&type===menu.type}"
+                 (click)="changePosition()"
+                 [routerLink]="'/help/'+menu.type+'/'+item.type"
+                 *ngFor="let item of menu.childes">
+                {{item.name}}
+              </a>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="d-inline-block"></div>
+</div>

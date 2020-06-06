@@ -1,0 +1,73 @@
+@import "../../../../color";
+
+.content {
+  min-height: 800px;
+}
+
+.btn-item {
+  background-color: @mainColor;
+  box-shadow: none;
+  outline: none;
+  color: #f8f8f8;
+
+  &:hover {
+    background-color: #00bcff;
+  }
+
+  &:active {
+    background-color: #00bcff;
+  }
+
+}
+
+.pagination-list {
+  display: block;
+
+  .list-link {
+    margin-left: -1px !important;
+    color: #212529 !important;
+  }
+}
+
+
+.page-link {
+  box-shadow: none !important;
+  outline: none;
+}
+
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 200px;
+  transition: all .6s;
+  color: #fff !important;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.4rem;
+  overflow: hidden;
+  border: 4px solid #8d8d8d;
+  text-decoration: none !important;
+  background: #8d8d8d;
+  &:hover {
+    border-color: #f8f8f8 !important;
+  }
+
+  &-content {
+    position: relative;
+    margin: 0 auto;
+    vertical-align: middle;
+    /* height: 100%; */
+    display: inline-block;
+    transform: translateY(-50%);
+    top: 50%;
+  }
+
+  &-icon {
+    font-size: 50px!important;
+
+  }
+
+}
+
+

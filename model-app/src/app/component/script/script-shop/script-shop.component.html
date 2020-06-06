@@ -1,0 +1,84 @@
+<div class="container-fluid text-center content">
+  <div class="btn-group mt-5" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-lg btn-item">最新发布</button>
+    <button type="button" class="btn btn-lg btn-item">最多收藏</button>
+    <button type="button" [matMenuTriggerFor]="useType" class="btn btn-lg btn-item dropdown-toggle">
+      最多使用
+    </button>
+    <mat-menu #useType="matMenu">
+      <button mat-menu-item (click)="selectDays=1">今天</button>
+      <button mat-menu-item (click)="selectDays=7">一周内</button>
+      <button mat-menu-item (click)="selectDays=30">一月内</button>
+    </mat-menu>
+    <button type="button" [matMenuTriggerFor]="scriptType" class="btn btn-lg btn-item dropdown-toggle">
+      模板类型
+    </button>
+    <mat-menu #scriptType="matMenu">
+      <button *ngFor="let item of scriptTypes" mat-menu-item (click)="selectType=item.key">{{item.value}}</button>
+    </mat-menu>
+    <button type="button" class="btn btn-lg btn-item">我的收藏</button>
+  </div>
+  <div class="my-5 text-center" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status" >
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <ng-container *ngIf="!isLoading">
+    <div class="container">
+      <nav class="mt-5 nav-box text-left">
+        <ul class="pagination pagination-list">
+          <li class="page-item" *ngFor="let item of scripts.list">
+            <a class="page-link list-link" [tooltip]="item.describeContent" (click)="loadScript(item.id)">
+            <span class="ionicons mx-2"
+                  [ngClass]="{'ion-ios-star':fStr.indexOf(item.id)>=0,'ion-ios-star-outline':fStr.indexOf(item.id)<0}"
+                  (click)="$event.stopPropagation();addFavoriteScript(item)" tooltip="订阅"></span>
+              <span>{{item.name}}</span>
+              <span class="badge badge-primary mx-2">{{TYPE_SCRIPT[item.type]}}</span>
+              <span class="float-right">{{item.createTime|dateformat}}</span>
+              <span class="float-right text-info mx-2" (click)="$event.stopPropagation()">{{item.userId}}</span>
+              <span class="float-right mx-2">by</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <nav class="mt-5 nav-box d-inline-block" aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" style="min-width: 45px">
+          <a class="page-link" href="javascript:" (click)="changePage(1)">首页</a>
+        </li>
+        <li class="page-item" style="min-width: 60px" [ngClass]="{'disabled':pageNow===1}">
+          <a class="page-link" href="javascript:" (click)="changePage(pageNow - 1)">上一页</a>
+        </li>
+        <li *ngFor="let n of getShowNum()" class="page-item" [ngClass]="{'active':n===pageNow}">
+          <a *ngIf="n!==pageNow" class="page-link" href="javascript:" (click)="changePage(n)">{{n}}</a>
+          <span *ngIf="n===pageNow" class="page-link ">
+              {{n}}
+            <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        <li class="page-item" style="min-width: 60px" [ngClass]="{'disabled':pageNow===pageCount}">
+          <a class="page-link" href="javascript:" (click)="changePage(pageNow + 1)">下一页</a>
+        </li>
+        <li class="page-item" style="min-width: 45px">
+          <a class="page-link" href="javascript:" (click)="changePage(pageCount)">末页</a>
+        </li>
+      </ul>
+    </nav>
+  </ng-container>
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-3 px-1 py-1" *ngFor="let item of this.scriptTypes">
+        <a class="card" (click)="chooseType(item.key)">
+          <div class="card-content">
+            <span class="iconfont card-icon" [ngClass]="'icon-'+item.key"></span>
+            <p>{{item.value}}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+</div>

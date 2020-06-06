@@ -1,0 +1,105 @@
+[
+    {
+        "name": "快速上手",
+        "type": "start",
+        "childes": [
+            {
+                "name": "订阅模板",
+                "type": "collectiontemplate",
+                "childes": []
+            },
+            {
+                "name": "创建对象",
+                "type": "createdomain",
+                "childes": []
+            },
+            {
+                "name": "添加属性",
+                "type": "addattr",
+                "childes": []
+            },
+            {
+                "name": "添加接口",
+                "type": "addintf",
+                "childes": []
+            },
+            {
+                "name": "映射模板",
+                "type": "choosetemplate",
+                "childes": []
+            },
+            {
+                "name": "生成代码",
+                "type": "createcode",
+                "childes": []
+            }
+        ]
+    },
+    {
+        "name": "模型定义",
+        "type": "model",
+        "childes": [
+            {
+                "name": "操作对象",
+                "type": "domainoperation",
+                "childes": []
+            },
+            {
+                "name": "操作属性",
+                "type": "attroperation",
+                "childes": []
+            },
+            {
+                "name": "操作服务",
+                "type": "intfoperation",
+                "childes": []
+            },
+            {
+                "name": "操作映射",
+                "type": "mapoperation",
+                "childes": []
+            },
+            {
+                "name": "操作项目",
+                "type": "projectoperation",
+                "childes": []
+            }
+        ]
+    },
+    {
+        "name": "模板创作",
+        "type": "template",
+        "childes": [
+            {
+                "name": "新建模板",
+                "type": "addtemplate",
+                "childes": []
+            },
+            {
+                "name": "测试数据",
+                "type": "testdata",
+                "childes": []
+            },
+            {
+                "name": "模板语法",
+                "type": "templategrammar",
+                "childes": []
+            },
+            {
+                "name": "操作模板",
+                "type": "templateoperation",
+                "childes": []
+            },
+            {
+                "name": "模板管理",
+                "type": "templatemanage",
+                "childes": []
+            }
+        ]
+    },
+    {
+        "name": "模板商城",
+        "type": "templateshop",
+        "childes": []
+    }
+]
