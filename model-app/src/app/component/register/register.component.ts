@@ -3,7 +3,7 @@ import {UserInfo} from 'src/app/domain/userinfo.domain';
 import {UserInfoMgeSvr} from '../../service/user-info-mge.service';
 import {CookieUtil} from '../../share/class/cookie';
 import {MatSnackBar} from '@angular/material';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 const SESSION_NAME = '_MytModel_Session_Token_Info_';
 
@@ -63,6 +63,7 @@ export class RegisterComponent implements OnInit {
     private userInfoMgeSvr: UserInfoMgeSvr,
     private snackBar: MatSnackBar,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {
   }
 
@@ -147,9 +148,15 @@ export class RegisterComponent implements OnInit {
     if (this.isCheckPsw === 1 && this.isCheckPsw2 === 1 && this.isCheckPass === 1 && this.isCheckNickName === 1 && this.isCheckUserName === 1) {
       this.userInfoMgeSvr.RegisterUserDetails(this.userInfo).then(res => {
         if (res.Token) {
-          this.cookie.cookie(SESSION_NAME, JSON.stringify(res), {path: '/', expires: res.Effective});
-          this.router.navigateByUrl('/');
           this.snackBar.open('注册成功', '', {duration: 2000});
+          this.activatedRoute.queryParams.subscribe(queryParam => {
+            if (!!queryParam.redirect_url) {
+              window.location.href = decodeURIComponent(queryParam.redirect_url);
+            } else {
+              this.cookie.cookie(SESSION_NAME, JSON.stringify(res), {path: '/', expires: res.Effective});
+              this.router.navigateByUrl('/');
+            }
+          })
         }
       }, err => {
         this.snackBar.open('注册失败', '', {duration: 2000});
