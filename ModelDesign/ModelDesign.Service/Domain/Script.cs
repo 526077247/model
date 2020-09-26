@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ModelDesign.Service
 {
-    public class Script : DataBase
+    public class Script : DataObject
     {
         /// <summary>
         /// 标识

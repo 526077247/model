@@ -8,7 +8,7 @@ namespace ModelDesign.Service
     /// <summary>
     /// 生成脚本
     /// </summary>
-    public class BuildingScript:DataBase
+    public class BuildingScript: DataObject
     {
         /// <summary>
         /// 脚本标识

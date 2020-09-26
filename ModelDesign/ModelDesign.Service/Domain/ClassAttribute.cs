@@ -8,7 +8,7 @@ namespace ModelDesign.Service
     /// <summary>
     /// 对象属性
     /// </summary>
-    public class ClassAttribute : DataBase
+    public class ClassAttribute : DataObject
     {
         /// <summary>
         /// 属性标识

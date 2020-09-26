@@ -14,4 +14,7 @@ export class ContainerComponent implements OnInit {
   ngOnInit() {
   }
 
+  public goLogin():void {
+    window.location.href="/api/auth2login.midw?redirectUrl="+window.location.href;
+  }
 }

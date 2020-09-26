@@ -8,7 +8,7 @@ namespace ModelDesign.Service
     /// <summary>
     /// 最爱脚本
     /// </summary>
-    public class FavoriteScript : DataBase
+    public class FavoriteScript : DataObject
     {
         /// <summary>
         /// 最爱脚本标识

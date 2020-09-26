@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Account.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +40,7 @@ namespace ModelDesign
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSSO("/api/auth2login.midw", "https://account.mayuntao.xyz", "_MytModel_Session_Token_Info_");
             app.UseHttpManager();
             app.UseStaticFiles();
         }

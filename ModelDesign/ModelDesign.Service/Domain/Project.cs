@@ -9,7 +9,7 @@ namespace ModelDesign.Service
     /// <summary>
     /// 项目
     /// </summary>
-    public class Project : DataBase
+    public class Project : DataObject
     {
         /// <summary>
         /// 项目标识

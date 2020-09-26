@@ -8,7 +8,7 @@ namespace ModelDesign.Service
     /// <summary>
     /// 接口方法
     /// </summary>
-    public class Method : DataBase
+    public class Method : DataObject
     {
         /// <summary>
         /// 方法标识

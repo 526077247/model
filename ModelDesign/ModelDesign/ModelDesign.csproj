@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Service.Core-PsFramework" Version="1.0.12" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ModelDesign.Service\ModelDesign.Service.csproj" />
   </ItemGroup>
 

@@ -28,8 +28,8 @@ const routes: Routes = [{
   component: ContainerComponent,
   children: [
     {path: '', component: HomeComponent},
-    {path: 'login', component: LoginComponent},
-    {path: 'register', component: RegisterComponent},
+    //{path: 'login', component: LoginComponent},
+    //{path: 'register', component: RegisterComponent},
     {path: 'design', component: DesignComponent},
     {path: 'design/:id', component: DesignComponent},
     {path: 'script', component: ScriptComponent},

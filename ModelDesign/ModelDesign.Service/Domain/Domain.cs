@@ -8,7 +8,7 @@ namespace ModelDesign.Service
     /// <summary>
     /// 对象
     /// </summary>
-    public class Domain : DataBase
+    public class Domain : DataObject
     {
         /// <summary>
         /// 对象标识

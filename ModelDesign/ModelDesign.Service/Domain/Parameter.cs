@@ -8,7 +8,7 @@ namespace ModelDesign.Service
     /// <summary>
     /// 参数
     /// </summary>
-    public class Parameter : DataBase
+    public class Parameter : DataObject
     {
         /// <summary>
         /// 参数标识

@@ -1,6 +1,7 @@
-﻿using IBatisNet.DataAccess;
+﻿using Account.Service;
+using IBatisNet.DataAccess;
 using service.core;
-using sso.service;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace ModelDesign.Service
 
     public class FavoriteScriptMgeSvr : AppServiceBase, IFavoriteScriptMgeSvr
     {
-        private readonly ILoginMgeSvr _LoginMgeSvr = null;
+        private readonly ISessionMgeSvr _SessionMgeSvr = null;
         private readonly IDaoManager daoManager = null;
         private readonly IFavoriteScriptDao _FavoriteScriptDao = null;
         #region 服务定义
@@ -20,7 +21,7 @@ namespace ModelDesign.Service
         /// </summary>
         public FavoriteScriptMgeSvr() : base()
         {
-            _LoginMgeSvr = DynServerFactory.CreateServer<ILoginMgeSvr>("http://47.98.50.215/Service/LoginMgeSvr.assx");
+            _SessionMgeSvr = ServiceManager.GetService<ISessionMgeSvr>();
             daoManager = ServiceConfig.GetInstance().DaoManager;
             _FavoriteScriptDao = (IFavoriteScriptDao)daoManager.GetDao(typeof(IFavoriteScriptDao));
         }
@@ -41,7 +42,7 @@ namespace ModelDesign.Service
             script.id = Guid.NewGuid().ToString();
             script.addTime = DateTime.Now;
             script.scriptId = scriptId;
-            script.userId = _LoginMgeSvr.GetLoginInfo(token).Name;
+            script.userId =_SessionMgeSvr.Get(token).Name;
             _FavoriteScriptDao.Insert(script);
             return script;
         }
@@ -55,7 +56,7 @@ namespace ModelDesign.Service
         [PublishMethod]
         public int Delete(string token, string id)
         {
-            if (_FavoriteScriptDao.Get(new FavoriteScript { id = id }) is FavoriteScript script && _LoginMgeSvr.GetLoginInfo(token).Name == script.userId)
+            if (_FavoriteScriptDao.Get(new FavoriteScript { id = id }) is FavoriteScript script &&_SessionMgeSvr.Get(token).Name == script.userId)
                 return _FavoriteScriptDao.Delete(script);
             else
                 throw new ServiceException((int)TYPE_OF_RESULT_TYPE.failure, "无权限");
@@ -74,7 +75,7 @@ namespace ModelDesign.Service
             ResultList<FavoriteScript> result = new ResultList<FavoriteScript>();
             Hashtable para = new Hashtable
             {
-                { "userId",_LoginMgeSvr.GetLoginInfo(token).Name},
+                { "userId",_SessionMgeSvr.Get(token).Name},
                 { "_OrderBy", "addTime_D" }
             };
             result.total = _FavoriteScriptDao.QueryCount(para);

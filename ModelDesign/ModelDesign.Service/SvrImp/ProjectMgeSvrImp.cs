@@ -1,7 +1,6 @@
-﻿using IBatisNet.DataAccess;
+﻿using Account.Service;
+using IBatisNet.DataAccess;
 using service.core;
-using service.core;
-using sso.service;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace ModelDesign.Service
     public class ProjectMgeSvr : AppServiceBase, IProjectMgeSvr
     {
         #region 服务描述：项目管理服务
-        private readonly ILoginMgeSvr _LoginMgeSvr = null;
+        private readonly ISessionMgeSvr _SessionMgeSvr = null;
         private readonly IDaoManager daoManager = null;
         private readonly IProjectDao _ProjectDao = null;
         /// <summary>
@@ -20,7 +19,7 @@ namespace ModelDesign.Service
         /// </summary>
         public ProjectMgeSvr() : base()
         {
-            _LoginMgeSvr = DynServerFactory.CreateServer<ILoginMgeSvr>("http://47.98.50.215/Service/LoginMgeSvr.assx");
+            _SessionMgeSvr = ServiceManager.GetService<ISessionMgeSvr>();
             daoManager = ServiceConfig.GetInstance().DaoManager;
             _ProjectDao = (IProjectDao)daoManager.GetDao(typeof(IProjectDao));
         }
@@ -39,7 +38,7 @@ namespace ModelDesign.Service
         {
             project.id = Guid.NewGuid().ToString();
             project.createTime = DateTime.Now;
-            project.userId = _LoginMgeSvr.GetLoginInfo(token).Name;
+            project.userId = _SessionMgeSvr.Get(token).Name;
             if (project.domains == null)
                 project.domains = new DataList<Domain>();
             if (project.scripts == null)
@@ -62,7 +61,7 @@ namespace ModelDesign.Service
             project = _ProjectDao.Get(project) as Project;
             if (project == null)
                 return new Project();
-            if (project.userId != _LoginMgeSvr.GetLoginInfo(token).Name)
+            if (project.userId != _SessionMgeSvr.Get(token).Name)
                 throw new Exception("无权限");
             return project;
         }
@@ -126,7 +125,7 @@ namespace ModelDesign.Service
                 { "createTime_S", createTimeS.TimeFormat() },
                 { "createTime_E", createTimeE.TimeFormat() },
                 { "_OrderBy", "createTime_D" },
-                { "userId" , _LoginMgeSvr.GetLoginInfo(token).Name}
+                { "userId" , _SessionMgeSvr.Get(token).Name}
             };
             if (!string.IsNullOrEmpty(state_IN))
             {

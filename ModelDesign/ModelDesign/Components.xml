@@ -7,13 +7,15 @@
     
     <!--验证登陆-->
     <component id="CheckLoginMgeSvr" type="ModelDesign.Service.CheckLoginMgeSvr, ModelDesign.Service" service="service.core.ICheckLoginMgeSvr, service.core"/>
-    <!--用户管理-->
-    <component id="LoginMgeSvr" type="service.core.ProxyService, service.core" service="service.core.IProxyService, service.core">
+    <!--登录管理-->
+    <component id="Account.LoginMgeSvr" type="service.core.ProxyService, service.core" service="service.core.IProxyService, service.core">
       <parameters>
-        <service>sso.service.ILoginMgeSvr, sso.service</service>
-        <url>http://47.98.50.215/Service/LoginMgeSvr.assx</url>
+        <service>Account.Service.ILoginMgeSvr, Account.Service</service>
+        <url>http://account.mayuntao.xyz/Service/LoginMgeSvr.assx</url>
       </parameters>
     </component>
+    <!--Session管理-->
+    <component id="SessionMgeSvr"  type="ModelDesign.Service.SessionMgeSvr,ModelDesign.Service" service="Account.Service.ISessionMgeSvr, Account.Service"/>
     <!--项目管理服务-->
     <component id="ProjectMgeSvr" type="ModelDesign.Service.ProjectMgeSvr, ModelDesign.Service" service="ModelDesign.Service.IProjectMgeSvr, ModelDesign.Service"/>
     <!--模型设计服务

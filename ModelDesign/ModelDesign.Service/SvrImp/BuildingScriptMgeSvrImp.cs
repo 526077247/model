@@ -1,6 +1,7 @@
-﻿using IBatisNet.DataAccess;
+﻿using Account.Service;
+using IBatisNet.DataAccess;
 using service.core;
-using sso.service;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,14 +17,14 @@ namespace ModelDesign.Service
     {
         #region 服务描述：脚本管理服务
 
-        private readonly ILoginMgeSvr _LoginMgeSvr = null;
+        private readonly ISessionMgeSvr _SessionMgeSvr = null;
         private readonly IDaoManager daoManager = null;
         private readonly IBuildingScriptDao _BuildingScriptDao = null;
         private readonly IFavoriteScriptDao _FavoriteScriptDao = null;
         private readonly string _ScriptsPath = ConfigurationManager.Configuration.GetSection("scriptsPath").Value;
         public BuildingScriptMgeSvr() : base()
         {
-            _LoginMgeSvr = DynServerFactory.CreateServer<ILoginMgeSvr>("http://47.98.50.215/Service/LoginMgeSvr.assx");
+            _SessionMgeSvr = ServiceManager.GetService<ISessionMgeSvr>();
             daoManager = ServiceConfig.GetInstance().DaoManager;
             _BuildingScriptDao = (IBuildingScriptDao)daoManager.GetDao(typeof(IBuildingScriptDao));
             _FavoriteScriptDao = (IFavoriteScriptDao)daoManager.GetDao(typeof(IFavoriteScriptDao));
@@ -46,14 +47,14 @@ namespace ModelDesign.Service
         {
             buildingScript.id = Guid.NewGuid().ToString();
             buildingScript.createTime = DateTime.Now;
-            buildingScript.userId = _LoginMgeSvr.GetLoginInfo(token).Name;
+            buildingScript.userId = _SessionMgeSvr.Get(token).Name;
             _BuildingScriptDao.Insert(buildingScript);
             SaveJsFile(buildingScript);
             FavoriteScript script = new FavoriteScript();
             script.id = Guid.NewGuid().ToString();
             script.addTime = DateTime.Now;
             script.scriptId = buildingScript.id;
-            script.userId = _LoginMgeSvr.GetLoginInfo(token).Name;
+            script.userId = _SessionMgeSvr.Get(token).Name;
             _FavoriteScriptDao.Insert(script);
             return buildingScript;
         }
@@ -72,7 +73,7 @@ namespace ModelDesign.Service
         public BuildingScript Update(string token, string id, BuildingScript buildingScript)
         {
             BuildingScript oldBuildingScript = Get(token, id);
-            if (oldBuildingScript?.userId != _LoginMgeSvr.GetLoginInfo(token).Name)
+            if (oldBuildingScript?.userId != _SessionMgeSvr.Get(token).Name)
                 throw new ServiceException((int)TYPE_OF_RESULT_TYPE.failure, "无权限");
             buildingScript.createTime = oldBuildingScript.createTime;
             buildingScript.id = oldBuildingScript.id;
@@ -92,7 +93,7 @@ namespace ModelDesign.Service
         public int Delete(string token, string id)
         {
             BuildingScript oldBuildingScript = Get(token, id);
-            if (oldBuildingScript?.userId != _LoginMgeSvr.GetLoginInfo(token).Name)
+            if (oldBuildingScript?.userId != _SessionMgeSvr.Get(token).Name)
                 throw new ServiceException((int)TYPE_OF_RESULT_TYPE.failure, "无权限");
             File.Delete($"{_ScriptsPath}/{oldBuildingScript.id}.js");
             return _BuildingScriptDao.Delete(oldBuildingScript);
@@ -110,7 +111,7 @@ namespace ModelDesign.Service
             buildingScript = _BuildingScriptDao.Get(buildingScript) as BuildingScript;
             if (buildingScript == null)
                 throw new ServiceException((int)TYPE_OF_RESULT_TYPE.failure, "指定id不存在");
-            if (!(buildingScript.state == (int)TYPE_BUILDINGSCRIPT_STATE.PUBLIC || buildingScript?.userId == _LoginMgeSvr.GetLoginInfo(token).Name))
+            if (!(buildingScript.state == (int)TYPE_BUILDINGSCRIPT_STATE.PUBLIC || buildingScript?.userId == _SessionMgeSvr.Get(token).Name))
                 throw new ServiceException((int)TYPE_OF_RESULT_TYPE.failure, "无权限");
             string content = File.ReadAllText($"{_ScriptsPath}/{buildingScript.id}.js");
             buildingScript.content = content.Split("//---")[0];
@@ -167,7 +168,7 @@ namespace ModelDesign.Service
             ResultList<BuildingScript> result = new ResultList<BuildingScript>();
             Hashtable para = new Hashtable
             {
-                { "userId",_LoginMgeSvr.GetLoginInfo(token).Name},
+                { "userId",_SessionMgeSvr.Get(token).Name},
                 { "type_IN" , typeIN },
                 { "createTime_S", createTimeS.TimeFormat() },
                 { "createTime_E", createTimeE.TimeFormat() },
@@ -197,7 +198,7 @@ namespace ModelDesign.Service
         {
             Hashtable para1 = new Hashtable
             {
-                { "userId",_LoginMgeSvr.GetLoginInfo(token).Name}
+                { "userId",_SessionMgeSvr.Get(token).Name}
             };
             var list1 = _FavoriteScriptDao.QueryList(para1, 0, -1);
             string ids = "";

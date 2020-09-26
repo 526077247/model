@@ -7,8 +7,7 @@
 <!--    <a class="container-header-title-link ml-5 d-inline-block" *ngFor="let item of getTitle()"-->
 <!--       [routerLink]="'/list/'+item">{{getName(item)}}</a>-->
     <span class="container-header-controls mr-3" matRipple>
-      <a href="javascript:" class="container-header-control " [class.active]="isOpen"
-         routerLink="/login">
+      <a href="javascript:" class="container-header-control " [class.active]="isOpen" (click)="goLogin()" >
         <span class="ion-ios-person ionicon"></span>
       </a>
     </span>
