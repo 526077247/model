@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MytAccount" Version="1.0.2" />
+    <PackageReference Include="MytAccount" Version="1.0.4" />
     <PackageReference Include="Service.Core-PsFramework" Version="1.0.18" />
   </ItemGroup>
 
