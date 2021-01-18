@@ -106,6 +106,7 @@ export class DesignComponent implements OnInit {
   public getShowInfo(): void {
     this.projectMgeSvr.Get(this.loginAuthor.token, this.id).then(res => {
       this.project = res;
+      this.domainList = this.project.getDomainList();
     });
 
   }
@@ -278,6 +279,7 @@ export class DesignComponent implements OnInit {
   public showProject(item: Project): void {
     this.projectMgeSvr.Get(this.loginAuthor.token, item.id).then(res => {
       this.project = res;
+      this.domainList = this.project.getDomainList();
     });
   }
 
