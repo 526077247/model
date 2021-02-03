@@ -154,12 +154,25 @@ export class DomainDesignComponent implements OnInit {
   public changeMethodCheck(item: Method): void {
     setTimeout(() => {
       item.isCheck = !item.isCheck;
+      if(this.showMethodId){
+        for (const item of this.modifyDomain.methods) {
+          if(this.showMethodId === item.id){
+            for (const para of item.parameters) {
+              para.isCheck = false;
+            }
+            break;
+          }
+        }
+      }
     });
   }
 
   public changeParaCheck(item: Parameter): void {
     setTimeout(() => {
       item.isCheck = !item.isCheck;
+      for (const item of this.modifyDomain.methods) {
+        item.isCheck = false;
+      }
     });
   }
 
@@ -168,6 +181,11 @@ export class DomainDesignComponent implements OnInit {
    * @param item 方法
    */
   public showMethodPara(item: Method) {
+    if(this.showMethodId){
+      for (const para of item.parameters) {
+        para.isCheck = false;
+      }
+    }
     this.showMethodId = this.showMethodId === item.id ? '' : item.id;
   }
 
@@ -231,6 +249,16 @@ export class DomainDesignComponent implements OnInit {
         for (const item of this.modifyDomain.methods) {
           item.isCheck = true;
         }
+        if(this.showMethodId){
+          for (const item of this.modifyDomain.methods) {
+            if(this.showMethodId === item.id){
+              for (const para of item.parameters) {
+                para.isCheck = false;
+              }
+              break;
+            }
+          }
+        }
       }
     });
   }
@@ -263,6 +291,9 @@ export class DomainDesignComponent implements OnInit {
         for (const item of method.parameters) {
           item.isCheck = true;
         }
+        for (const item of this.modifyDomain.methods) {
+          item.isCheck = false;
+        }
       }
     });
   }
@@ -280,9 +311,24 @@ export class DomainDesignComponent implements OnInit {
         }
       }
     } else if (this.clickType === 2) {
-      for (const item of this.modifyDomain.methods) {
-        if (item.isCheck) {
-          res.push(item);
+      if(!!this.showMethodId){
+        for (const item of this.modifyDomain.methods) {
+          if (this.showMethodId === item.id) {
+            for (const item2 of item.parameters) {
+              if (item2.isCheck) {
+                this.clickType = 3
+                res.push(item);
+              }
+            }
+            break;
+          }
+        }
+      }
+      if(this.clickType !== 3){
+        for (const item of this.modifyDomain.methods) {
+          if (item.isCheck) {
+            res.push(item);
+          }
         }
       }
     }
@@ -301,7 +347,8 @@ export class DomainDesignComponent implements OnInit {
   }
 
   public paste(): void {
-    if (this.shearPlateService.gettype() !== this.clickType) {
+    const type = this.shearPlateService.gettype()
+    if (type !== this.clickType&&type!==3) {
       this.snackBar.open('类型不匹配', '', {duration: 2000});
       return;
     }
@@ -315,19 +362,34 @@ export class DomainDesignComponent implements OnInit {
       return;
     }
     let count = 0;
-    if (this.clickType === 1) {
+    if (type === 1) {
       for (const item of list) {
         item.id = Util.uuid();
         item.domainId = this.modifyDomain.id;
         this.modifyDomain.classAttributes.push(new ClassAttribute(item));
         count++;
       }
-    } else if (this.clickType === 2) {
+    } else if (type === 2) {
       for (const item of list) {
         item.id = Util.uuid();
         item.domainId = this.modifyDomain.id;
         this.modifyDomain.methods.push(new Method(item));
         count++;
+      }
+    }else if (type === 3) {
+      if(!this.showMethodId){
+        this.snackBar.open('类型不匹配', '', {duration: 2000});
+        return;
+      }
+      for(const method of this.modifyDomain.methods){
+        if(method.id === this.showMethodId){
+          for (const item of list) {
+            item.id = Util.uuid();
+            item.methodId = method.id;
+            method.parameters.push(new Parameter(item));
+            count++;
+          }
+        }
       }
     }
     this.snackBar.open(`粘贴${count}条成功`, '', {duration: 2000});
