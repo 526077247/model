@@ -304,27 +304,28 @@ export class DomainDesignComponent implements OnInit {
 
   public copy(): void {
     const res = [];
-    if (this.clickType === 1) {
+    let tempType = this.clickType;
+    if (tempType === 1) {
       for (const item of this.modifyDomain.classAttributes) {
         if (item.isCheck) {
           res.push(item);
         }
       }
-    } else if (this.clickType === 2) {
+    } else if (tempType === 2) {
       if(!!this.showMethodId){
         for (const item of this.modifyDomain.methods) {
           if (this.showMethodId === item.id) {
             for (const item2 of item.parameters) {
               if (item2.isCheck) {
-                this.clickType = 3
-                res.push(item);
+                tempType = 3
+                res.push(item2);
               }
             }
             break;
           }
         }
       }
-      if(this.clickType !== 3){
+      if(tempType !== 3){
         for (const item of this.modifyDomain.methods) {
           if (item.isCheck) {
             res.push(item);
@@ -341,7 +342,7 @@ export class DomainDesignComponent implements OnInit {
       window.getSelection().addRange(range);
       document.execCommand('copy');
       this.shearPlateService.set(this.copyContent);
-      this.shearPlateService.settype(this.clickType);
+      this.shearPlateService.settype(tempType);
       this.snackBar.open(res.length <= 0 ? '未选择复制项' : `复制${res.length}条成功`, '', {duration: 2000});
     });
   }
@@ -398,7 +399,8 @@ export class DomainDesignComponent implements OnInit {
   public delete(): void {
     const res = [];
     let count = 0;
-    if (this.clickType === 1) {
+    let tempType = this.clickType;
+    if (tempType === 1) {
       for (const item of this.modifyDomain.classAttributes) {
         if (!item.isCheck) {
           res.push(item);
@@ -407,15 +409,33 @@ export class DomainDesignComponent implements OnInit {
         }
       }
       this.modifyDomain.classAttributes = res;
-    } else if (this.clickType === 2) {
-      for (const item of this.modifyDomain.methods) {
-        if (!item.isCheck) {
-          res.push(item);
-        } else {
-          count++;
+    } else if (tempType === 2) {
+      if(!!this.showMethodId){
+        for (const item of this.modifyDomain.methods) {
+          if (this.showMethodId === item.id) {
+            for (const item2 of item.parameters) {
+              if (!item2.isCheck) {
+                tempType = 3
+                res.push(item2);
+              } else {
+                count++;
+              }
+            }
+            item.parameters = res;
+            break;
+          }
         }
       }
-      this.modifyDomain.methods = res;
+      if(tempType !== 3){
+        for (const item of this.modifyDomain.methods) {
+          if (!item.isCheck) {
+            res.push(item);
+          } else {
+            count++;
+          }
+        }
+        this.modifyDomain.methods = res;
+      }
     }
     if (count === 0) {
       this.snackBar.open(`未选择`, '', {duration: 2000});
