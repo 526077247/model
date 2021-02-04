@@ -413,9 +413,9 @@ export class DomainDesignComponent implements OnInit {
       if(!!this.showMethodId){
         for (const item of this.modifyDomain.methods) {
           if (this.showMethodId === item.id) {
+            tempType = 3
             for (const item2 of item.parameters) {
               if (!item2.isCheck) {
-                tempType = 3
                 res.push(item2);
               } else {
                 count++;
